@@ -13,19 +13,22 @@ class Tree {
     }
     
     buildTree(array){
-        let sortArray = mergeSort(array);
+
         let start = 0;
-        let end = sortArray.length - 1;
-        let mid = (start + end) / 2;
+        let end = array.length - 1;
+        let mid = Math.floor((start + end) / 2);
+        let rootNode = new Node(array[mid]);
+        if(start>end){
+            return null;
+        }
+        rootNode.leftNode = this.buildTree(array.slice(0,mid));
+        rootNode.rightNode = this.buildTree(array.slice(mid+1, array.length));
 
+        this.root = rootNode;
+        return rootNode;
     }
-
-    prettyPrint(){
-        //in the instructions
-    }
-
     insert(value){
-        //accepts a value to insert
+        
     }
 
     delete(value){
@@ -112,8 +115,113 @@ const mergeSort = list => {
    let binaryTree = new Tree();
 
 
+   const prettyPrint = (node, prefix = '', isLeft = true) => {
+    if (node === null) {
+       return;
+    }
+    if (node.rightNode !== null) {
+      prettyPrint(node.rightNode, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.leftNode !== null) {
+      prettyPrint(node.leftNode, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+  }
+
+
 
 
 const testArray = [1,5,2,8,9,24,64,4,22,98,15,16,99,11];
+const testArraySorted = mergeSort(testArray);
 
+
+const bTree = binaryTree.buildTree(testArraySorted);
+console.log(binaryTree.root);
+
+console.log(binaryTree.insert(0));
+
+prettyPrint(binaryTree.root);
+
+
+
+
+
+class Stack {
+    constructor()
+    {
+        this.data = [];
+    }
+    push(element){
+        let stack = this.data;
+        stack.push(element);
+        return 'stacked on top';
+    }
+    pop(){
+        return this.data.pop();
+    }
+    read(){
+        let stack = this.data;
+        return stack[stack.length - 1];
+    }
+}
+
+let stacks = new Stack();
+stacks.push(5);
+console.log('🍒',stacks.read());
+
+
+const linter = (string) => {
+    const stack = new Stack();
+
+    let stringA = string.split('');
+ 
+    for(let i = 0; i<stringA.length; i++){
+        if(isOpenB(stringA[i])){
+            stack.push(stringA[i]);
+            continue;
+        } 
+        if(isClosedB(stringA[i])){
+            let topOfStack = stack.pop();
+
+            if(!topOfStack){
+                return "there is no opening brace.."
+            }
+
+            if(isMatch(topOfStack, stringA[i])){
+                continue;
+            } else {
+                return `${string} has a mismatched opening brace..`
+            }
+        }
+    }
+    if(stack.read()){
+        return 'there is an opening brace that needs the right closer';
+    } else {
+        return 'no errors, thems good brackets'
+    }
+
+
+}
+
+const isOpenB = (string) => {
+    let openingBrackets = ['(','[','{'];
+    return openingBrackets.includes(string);
+}
+const isClosedB = (string) => {
+    let closingBrackets = [')',']','}'];
+    return closingBrackets.includes(string);
+}
+const isMatch = (openBracket, closeBracket) => {
+    let closingBrackets = [')',']','}'];
+    let openingBrackets = ['(','[','{'];
+
+    return openingBrackets.indexOf(openBracket) === closingBrackets.indexOf(closeBracket);
+}
+
+
+let bracketTest = '}()){}[]{[]';
+let bracketBreak = '(){}{{]}}';
+
+console.log('🍔',linter(bracketTest));
+console.log('🥑', linter(bracketBreak));
 
