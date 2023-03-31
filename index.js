@@ -218,10 +218,17 @@ const isMatch = (openBracket, closeBracket) => {
     return openingBrackets.indexOf(openBracket) === closingBrackets.indexOf(closeBracket);
 }
 
+const reverse = (string) => {
+    let stringA = string.split('');
+    let stack = new Stack();
+let reversed = '';
+    for(let i = 0;i<stringA.length;i++){
+        stack.push(stringA[i]);
+    }
+    while(stack.read()){
+        reversed+=stack.pop();
+    }
+    return reversed;
+}
 
-let bracketTest = '}()){}[]{[]';
-let bracketBreak = '(){}{{]}}';
-
-console.log('🍔',linter(bracketTest));
-console.log('🥑', linter(bracketBreak));
-
+console.log('🥦',reverse('hello'));
