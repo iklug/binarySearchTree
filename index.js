@@ -236,6 +236,11 @@ console.log('🥦',reverse('hello'));
 
 //exercises
 
+//imagine the function you write has already
+//been implemented by someone
+//id the subproblem of the problem
+//see what happens when you call the function on the subproblem
+
 //1. use recursion to write a function that accepts
 //an array of strings and returns the total number of 
 //characters across all the strings
@@ -253,3 +258,22 @@ const count = (array, amount = 0) => {
   return count(array, amount);
 }
 
+
+//2. use recursion to write a function that accepts 
+//an array of numbers and returns an array with
+//the even numbers
+
+
+
+let numbers = [1,2,3,4,5,6,7,8,9,10];
+
+const countEven = (array, collection = [])=>{
+
+    if(array.length === 0){
+        return;
+    }
+    if(array[0] % 2 === 0){
+        collection.push(array[0]);
+    }
+    return countEven(array.slice(1,array.length), collection);
+}
