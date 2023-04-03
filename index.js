@@ -232,3 +232,24 @@ let reversed = '';
 }
 
 console.log('🥦',reverse('hello'));
+
+
+//exercises
+
+//1. use recursion to write a function that accepts
+//an array of strings and returns the total number of 
+//characters across all the strings
+
+let words = ["ab", "c", "def", "ghij"];
+//answer = 10;
+
+const count = (array, amount = 0) => {
+
+  let first = array.shift().length;
+  amount+=first;
+  if(array.length === 0){
+    return amount;
+  }
+  return count(array, amount);
+}
+
