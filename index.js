@@ -277,3 +277,18 @@ const countEven = (array, collection = [])=>{
     }
     return countEven(array.slice(1,array.length), collection);
 }
+
+
+//unique paths -- write a function that accepts a number of rows and a number
+//of rows and a number of columns.. and calculates the number of possible
+//shortest paths from the upper leftmost square to the lower rightmost square
+
+//from the starting position, we have only two choices of movement
+
+
+const paths = (rows, columns) => {
+    if(rows === 1 || columns === 1){
+        return 1;
+    }
+    return paths(rows-1, columns) + paths(rows,columns-1);
+}
