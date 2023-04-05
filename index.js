@@ -292,3 +292,15 @@ const paths = (rows, columns) => {
     }
     return paths(rows-1, columns) + paths(rows,columns-1);
 }
+
+
+//utilizing memoization
+const fib = (n, memo = {}) => {
+    if(n === 0 || n === 1){
+      return n;
+    }
+    if(!memo[n]){
+      memo[n] = fib(n-1, memo) + fib(n-2, memo);
+    }
+    return memo[n];
+  }
