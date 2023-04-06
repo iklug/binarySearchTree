@@ -339,5 +339,18 @@ const fib = (n, memo = {}) => {
 
 let arrayZ = [0,5,7,2,9,3,1,8,12,18,4];
 
-console.log(partition(arrayZ, 0,arrayZ.length-1));
+//this does it for the whole array
+const quicksort = (array, leftIndex, rightIndex) => {
+    if(rightIndex - leftIndex <= 0){
+      return;
+    }
+    let pivotIndex = partition(array, leftIndex, rightIndex);
+  
+    quicksort(array, leftIndex, pivotIndex - 1);
+  
+    quicksort(array,pivotIndex+1, rightIndex);
+  
+    return array;
+  }
+  
 
