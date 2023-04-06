@@ -304,3 +304,40 @@ const fib = (n, memo = {}) => {
     }
     return memo[n];
   }
+
+  // partition and quicksort code implementation
+
+  const partition = (array, leftPointer, rightPointer) => {
+    let pivotIndex = rightPointer;
+    let pivot = array[pivotIndex];
+
+    rightPointer-=1;
+    while(true){
+        while(array[leftPointer] < pivot){
+            leftPointer += 1;
+        }
+        while(array[rightPointer] > pivot){
+            rightPointer -= 1;
+        }
+        if(leftPointer >= rightPointer){
+            break;
+        }
+        let leftValue = array[leftPointer];
+        let rightValue = array[rightPointer];
+        array.splice(leftPointer, 1, rightValue);
+        array.splice(rightPointer, 1, leftValue);
+        console.log(array);
+        leftPointer += 1;
+    }
+       let leftVal = array[leftPointer];
+       array.splice(leftPointer, 1, pivot);
+
+    array.splice(pivotIndex, 1, leftVal);
+  return array;
+}
+
+
+let arrayZ = [0,5,7,2,9,3,1,8,12,18,4];
+
+console.log(partition(arrayZ, 0,arrayZ.length-1));
+
