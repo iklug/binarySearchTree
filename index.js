@@ -120,11 +120,11 @@ const mergeSort = list => {
        return;
     }
     if (node.rightNode !== null) {
-      prettyPrint(node.rightNode, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+      prettyPrint(node.rightChild, `${prefix}${isLeft ? '│   ' : '    '}`, false);
     }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
     if (node.leftNode !== null) {
-      prettyPrint(node.leftNode, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+      prettyPrint(node.leftChild, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
   }
 
@@ -220,7 +220,7 @@ let reversed = '';
     return reversed;
 }
 
-console.log('🥦',reverse('hello'));
+
 
 
 //exercises
@@ -347,9 +347,9 @@ const quicksort = (array, leftIndex, rightIndex) => {
 
 
 class TreeNode{
-    constructor(data, left = null, right = null)
+    constructor(value, left = null, right = null)
     {
-        this.data = data;
+        this.value = value;
         this.leftChild = left;
         this.rightChild = right;
     }
@@ -366,3 +366,167 @@ const search = (searchValue, node) => {
         return search(searchValue, node.rightChild);
     }
 }
+
+const insertion = (value, node) => {
+    if(value < node.value){
+        if(node.leftChild === null){
+            node.leftChild = new TreeNode(value);
+        } else {
+            insertion(value, node.leftChild);
+        }
+    }
+    if(value > node.value){
+        if(node.rightChild === null){
+            node.rightChild = new TreeNode(value);
+        } else {
+            insertion(value, node.rightChild);
+        }
+    }
+}
+
+const deletion = (deletedValue, node) => {
+    if(node === null){
+        return null;
+    }
+    else if (deletedValue < node.value){
+        node.leftChild = delete(deletedValue, node.leftChild);
+        return node;
+    }
+    else if (deletedValue > node.value){
+        node.rightChild = delete(deletedValue, node.rightChild);
+        return node;
+    }
+    else if (deletedValue === node.value){
+        if(node.leftChild === null){
+            return node.rightChild;
+        }
+        else if(node.rightChild === null){
+            return node.leftChild;
+        }
+        else {
+            node.rightChild = lift(node.rightChild,node);
+            return node;
+        }
+    }
+}
+const lift = (node, nodeToDelete) => {
+    //if the current node of this function has
+    //a left child, we recurs. call this function
+    //to continue down the left subtree
+    //to find the successor node
+
+    if(node.leftChild){
+        node.leftChild = lift(node.leftChild, nodeToDelete);
+        return node;
+    } else {
+        nodeToDelete.value = node.value;
+        return node.rightChild;
+    }
+}
+
+const inorder = (node, string = ``) => {
+    if(node === null){
+        return;
+    }
+    inorder(node.leftChild, string);
+
+    console.log(node.value);
+
+    inorder(node.rightChild, string);
+
+
+
+
+}
+//write an algo that prints the largest value in a BST
+
+const largest = (node) => {
+    if(node.rightChild){
+        return largest(node.rightChild);
+    } else {
+        return node.value;
+    }
+}
+//lmao technically works
+//obviously, incredibly better. i can't get stuck with only thinking about the base 
+//case being if(node === null).. this prevents me from continuing to repeat based
+//on a conditional statement, and then just returns that instead of heading 
+//back up the fuggin call stack
+//the return value of the last node.rightchild is what gets passed up the call stack
+const smallest = (node) => {
+    if(node.leftChild){
+        return smallest(node.leftChild);
+    } else {
+        return node.value;
+    }
+}
+
+let rootNode = new TreeNode(5);
+console.log(rootNode.leftChild);
+
+let arrayX = [1,3,9,2,7,4,6,8];
+
+arrayX.forEach(value => insertion(value, rootNode));
+
+
+// insertion(7, rootNode);
+console.log(rootNode);
+
+
+// console.log(inorder(rootNode));
+// console.log(prettyPrint(rootNode));
+console.log(largest(rootNode));
+console.log(smallest(rootNode));
+
+
+//messing around with some graphs
+
+class Vertex {
+    constructor(value)
+    {
+      this.value = value;
+      this.adjacent = [];
+    }
+    addAdjacent = (vertex) => {
+      if(this.adjacent.includes(vertex)){
+        return;
+      }
+      this.adjacent.push(vertex);
+      vertex.addAdjacent(this);
+  
+    }
+  }
+
+  //this is in the case that it's a connected graph, where the relationship goes
+  //both ways, ayo
+  //this would be the case for the chess problem i have.
+
+  const dfs_traversal = (vertex, visited = {}) => {
+    visited[vertex.value] = true;
+    console.log(vertex.value);
+
+    vertex.adjacent.forEach(neighbor => {
+        if(visited[neighbor.value]){
+            return;
+        }
+        dfs_traversal(neighbor, visited);
+    })
+
+    return Object.keys(visited);
+  }
+
+  const sam = new Vertex('sam');
+  const bobby = new Vertex('bobby');
+  const erik = new Vertex('erik');
+  const polio = new Vertex('polio');
+  const brad = new Vertex('brad');
+  const quoddy = new Vertex('quoddy');
+
+  sam.addAdjacent(bobby);
+  bobby.addAdjacent(erik);
+  erik.addAdjacent(polio);
+  polio.addAdjacent(sam);
+  brad.addAdjacent(bobby);
+  quoddy.addAdjacent(brad);
+
+console.log(dfs_traversal(sam));
