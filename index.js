@@ -345,3 +345,24 @@ const quicksort = (array, leftIndex, rightIndex) => {
 
 //looking at binary search trees again
 
+
+class TreeNode{
+    constructor(data, left = null, right = null)
+    {
+        this.data = data;
+        this.leftChild = left;
+        this.rightChild = right;
+    }
+}
+
+const search = (searchValue, node) => {
+    if(node === null || node.value === searchValue){
+        return node;
+    }
+    else if (searchValue < node.value){
+        return search(searchValue, node.leftChild);
+    }
+    else {
+        return search(searchValue, node.rightChild);
+    }
+}
