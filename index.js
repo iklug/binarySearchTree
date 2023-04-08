@@ -132,15 +132,7 @@ const mergeSort = list => {
 
 
 const testArray = [1,5,2,8,9,24,64,4,22,98,15,16,99,11];
-const testArraySorted = mergeSort(testArray);
 
-
-const bTree = binaryTree.buildTree(testArraySorted);
-console.log(binaryTree.root);
-
-console.log(binaryTree.insert(0));
-
-prettyPrint(binaryTree.root);
 
 
 
@@ -165,9 +157,6 @@ class Stack {
     }
 }
 
-let stacks = new Stack();
-stacks.push(5);
-console.log('🍒',stacks.read());
 
 
 const linter = (string) => {
@@ -353,4 +342,6 @@ const quicksort = (array, leftIndex, rightIndex) => {
     return array;
   }
   
+
+//looking at binary search trees again
 
