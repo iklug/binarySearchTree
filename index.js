@@ -505,6 +505,8 @@ class Vertex {
     visited[vertex.value] = true;
     console.log(vertex.value);
 
+
+
     vertex.adjacent.forEach(neighbor => {
         if(visited[neighbor.value]){
             return;
@@ -512,8 +514,58 @@ class Vertex {
         dfs_traversal(neighbor, visited);
     })
 
-    return Object.keys(visited);
-  }
+return Object.keys(visited);
+}
+
+const dfs_find = (vertex, item, visited = {})=>{
+    if(vertex.value === item){
+        return vertex.value;
+    }
+    visited[vertex.value] = true;
+    console.log(visited);
+    let neighbors = vertex.adjacent;
+
+    for(let i = 0; i<neighbors.length; i++){
+        if(visited[neighbors[i].value]){
+            console.log(`skipped ${neighbors[i].value}`)
+            continue;
+
+        }
+        if(neighbors[i].value === item){
+            return neighbors[i].value;
+        } 
+        let dfs_biz = dfs_find(neighbors[i], item, visited);
+        if(dfs_biz){
+            return dfs_biz;
+        } 
+        
+    }
+    return null;
+}
+
+const bfs = (startingVertex) => {
+
+    let queue = [];
+    let visitedVerts = {};
+    visitedVerts[startingVertex.value] = true;
+    queue.push(startingVertex);
+    let anotherArray = [];
+
+    while(queue.length > 0){
+        let currentVertex = queue.shift();
+        console.log('🍋',currentVertex);
+        anotherArray.push(currentVertex.value);
+
+        currentVertex.adjacent.forEach(neighbor => {
+            if(!visitedVerts[neighbor.value]){
+                visitedVerts[neighbor.value] = true;
+                queue.push(neighbor);
+            }
+            
+        })
+    }
+    return anotherArray;
+}
 
   const sam = new Vertex('sam');
   const bobby = new Vertex('bobby');
@@ -530,3 +582,6 @@ class Vertex {
   quoddy.addAdjacent(brad);
 
 console.log(dfs_traversal(sam));
+
+console.log(dfs_find(sam,'quoddy'));
+console.log(bfs(sam));
