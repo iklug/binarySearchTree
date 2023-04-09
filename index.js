@@ -495,7 +495,10 @@ class Vertex {
       vertex.addAdjacent(this);
   
     }
+   
   }
+
+
 
   //this is in the case that it's a connected graph, where the relationship goes
   //both ways, ayo
@@ -574,14 +577,98 @@ const bfs = (startingVertex) => {
   const brad = new Vertex('brad');
   const quoddy = new Vertex('quoddy');
 
-  sam.addAdjacent(bobby);
-  bobby.addAdjacent(erik);
-  erik.addAdjacent(polio);
-  polio.addAdjacent(sam);
-  brad.addAdjacent(bobby);
-  quoddy.addAdjacent(brad);
+//   sam.addAdjacent(bobby);
+//   bobby.addAdjacent(erik);
+//   erik.addAdjacent(polio);
+//   polio.addAdjacent(sam);
+//   brad.addAdjacent(bobby);
+//   quoddy.addAdjacent(brad);
 
-console.log(dfs_traversal(sam));
+// console.log(dfs_traversal(sam));
 
-console.log(dfs_find(sam,'quoddy'));
-console.log(bfs(sam));
+// console.log(dfs_find(sam,'quoddy'));
+// console.log(bfs(sam));
+
+//knights table
+
+//there are x and y values
+//x can't be lower than 0 or greater than 7
+//same goes for y
+
+const moveOptions = (vertex, visited = {}) => {
+
+    visited[vertex.value] = true;
+
+    //given a string of numbers separated by a comma
+
+    //i want to return an array of options
+    //there should be a max of 8 items in the array;
+    let start = vertex.value;
+    let options = [];
+    let vertices = [];
+
+    let moves = [[1,2],[1,-2],[2,1],[2,-1],[-1,2],[-1,-2],[-2,1],[-2,-1]];
+    
+    for(let i = 0; i<moves.length; i++){
+
+        if(start[0] + moves[i][0] < 0 || start[0] + moves[i][0] > 7){
+            continue;
+        }
+        if(start[1] + moves[i][1] < 0 || start[1] + moves[i][1] > 7){
+            continue;
+        }
+        else {
+            options.push([start[0]+moves[i][0],start[1]+moves[i][1]]);
+        }
+    }
+    for(let i = 0; i<options.length; i++){
+
+        vertices.push(new Vertex(options[i]));
+    }
+
+    addAdjacentAll(vertex, vertices);
+
+    vertex.adjacent.forEach(neighbor => {
+    if(visited[neighbor.value]){
+        return;
+    }
+        moveOptions(neighbor, visited);
+    })
+    return Object.keys(visited);
+}
+    
+  
+
+
+
+const createVertices = array => {
+    let vertices = [];
+    for(let i = 0; i<array.length; i++){
+
+        vertices.push(new Vertex(array[i]));
+    }
+    return vertices;
+}
+const addAdjacentAll = (vertex, array) => {
+    if(vertex.adjacent.includes(array[0])){
+      return;
+    }
+    if(array.length === 0){
+        return;
+    }
+    vertex.adjacent.push(array[0]);
+    array[0].addAdjacent(vertex);
+    array.shift();
+    addAdjacentAll(vertex, array);
+
+  }
+const knight = new Vertex([0,0]);
+
+  console.log('🍇',moveOptions(knight));
+  console.log('🍐', createVertices(moveOptions(knight)));
+
+
+
+
+
+
